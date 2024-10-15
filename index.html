@@ -4,33 +4,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        h1{
+        h1 {
             text-align: center;
         }
-        #start{
+        #start {
             text-align: center;
         }
-        #startgomb{
+        #startgomb {
             padding: 10px;
         }
-        #sikeressor{
+        #mezo {
             display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding: 0 100px;
         }
-        #sikertelensor{
+        .column {
             display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 45%;
+        }
+        .szavak {
+            margin: 10px;
+            cursor: pointer;
+            padding: 10px;
+            border: 1px solid black;
+            background-color: lightgray;
+            width: 100px;
+            text-align: center;
+        }
+        #sikeressor, #sikertelensor {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .correct {
+            background-color: green;
+            transition: 0.3s;
+        }
+        .incorrect {
+            background-color: red;
+            transition: 0.3s;
         }
     </style>
-    <title>Document</title>
+    <title>Nyelvtanulás</title>
 </head>
 <body>
     <h1>Nyelvtanulás</h1>
     <div id="start"><button id="startgomb">Start</button></div>
-    <div id="mezo"></div>
+    <div id="mezo">
+        <div id="huColumn" class="column"></div>
+        <div id="enColumn" class="column"></div>
+    </div>
     <div id="sikeressor">Sikeres próbálkozások: <div id="sikeres">0</div></div>
-    <div id="sikertelensor">Sikeres próbálkozások: <div id="sikertelen">0</div></div>
+    <div id="sikertelensor">Sikertelen próbálkozások: <div id="sikertelen">0</div></div>
 
     <script>
-        const szavak=[
+        const szavak = [
             {hu: "alma", en: "apple"},
             {hu: "ház", en: "house"},
             {hu: "kutya", en: "dog"},
@@ -40,9 +71,87 @@
             {hu: "bicikli", en: "bicycle"},
             {hu: "ablak", en: "window"},
             {hu: "szék", en: "chair"},
-            {hu: "asztal", en: "table"},
-        ]
-        
+            {hu: "asztal", en: "table"}
+        ];
+
+        let selectedHu = null;
+        let selectedEn = null;
+        let sikeresCount = 0;
+        let sikertelenCount = 0;
+
+        document.getElementById("startgomb").addEventListener("click", function() {
+            startGame();
+        });
+
+        function startGame() {
+            const huColumn = document.getElementById("huColumn");
+            const enColumn = document.getElementById("enColumn");
+            huColumn.innerHTML = ""; 
+            enColumn.innerHTML = ""; 
+
+            const shuffledHu = szavak.map(szo => szo.hu).sort(() => Math.random() - 0.5);
+            const shuffledEn = szavak.map(szo => szo.en).sort(() => Math.random() - 0.5);
+
+            shuffledHu.forEach(hu => {
+                const huButton = document.createElement("button");
+                huButton.classList.add("szavak");
+                huButton.textContent = hu;
+                huButton.addEventListener("click", function() {
+                    selectWord(hu, "hu", huButton);
+                });
+                huColumn.appendChild(huButton);
+            });
+
+            shuffledEn.forEach(en => {
+                const enButton = document.createElement("button");
+                enButton.classList.add("szavak");
+                enButton.textContent = en;
+                enButton.addEventListener("click", function() {
+                    selectWord(en, "en", enButton);
+                });
+                enColumn.appendChild(enButton);
+            });
+        }
+
+        function selectWord(word, type, button) {
+            if (type === "hu") {
+                selectedHu = { word, button };
+            } else {
+                selectedEn = { word, button };
+            }
+
+            if (selectedHu && selectedEn) {
+                checkMatch();
+            }
+        }
+
+        function checkMatch() {
+            const pair = szavak.find(szo => szo.hu === selectedHu.word && szo.en === selectedEn.word);
+
+            if (pair) {
+                sikeresCount++;
+                document.getElementById("sikeres").textContent = sikeresCount;
+                selectedHu.button.classList.add("correct");
+                selectedEn.button.classList.add("correct");
+            } else {
+                sikertelenCount++;
+                document.getElementById("sikertelen").textContent = sikertelenCount;
+                selectedHu.button.classList.add("incorrect");
+                selectedEn.button.classList.add("incorrect");
+
+               
+                setTimeout(() => {
+                    selectedHu.button.classList.remove("incorrect");
+                    selectedHu.button.style.backgroundColor = "lightgray"; 
+                    selectedEn.button.classList.remove("incorrect");
+                    selectedEn.button.style.backgroundColor = "lightgray"; 
+                }, 1000);
+            }
+
+
+            selectedHu = null;
+            selectedEn = null;
+        }
     </script>
 </body>
 </html>
