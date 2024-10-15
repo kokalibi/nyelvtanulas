@@ -126,7 +126,7 @@
         function selectWord(word, type, button) {
             if (type === "hu") {
                 selectedHu = { word, button };
-                
+                button.st
             } else {
                 selectedEn = { word, button };
             }
@@ -150,6 +150,7 @@
                 selectedHu.button.classList.add("incorrect");
                 selectedEn.button.classList.add("incorrect");
             }
+
 
             selectedHu = null;
             selectedEn = null;
