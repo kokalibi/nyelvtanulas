@@ -149,6 +149,13 @@
                 document.getElementById("sikertelen").textContent = sikertelenCount;
                 selectedHu.button.classList.add("incorrect")
                 selectedEn.button.classList.add("incorrect")
+
+                setTimeout(() => {
+                    selectedHu.button.classList.remove("incorrect");
+                    selectedHu.button.style.backgroundColor = "lightgray"; 
+                    selectedEn.button.classList.remove("incorrect");
+                    selectedEn.button.style.backgroundColor = "lightgray"; 
+                }, 1000);
             }
 
 
