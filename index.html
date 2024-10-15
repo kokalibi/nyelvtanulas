@@ -41,11 +41,11 @@
         }
         .correct {
             background-color: green;
-            transition: 0.3s;
+            transition: 0.5s;
         }
         .incorrect {
             background-color: red;
-            transition: 0.3s;
+            transition: 0.5s;
         }
     </style>
     <title>Nyelvtanulás</title>
@@ -84,6 +84,11 @@
         });
 
         function startGame() {
+            sikeresCount = 0;
+            sikertelenCount = 0;
+            document.getElementById("sikeres").textContent = sikeresCount;
+            document.getElementById("sikertelen").textContent = sikertelenCount;
+
             const huColumn = document.getElementById("huColumn");
             const enColumn = document.getElementById("enColumn");
             huColumn.innerHTML = ""; 
@@ -138,14 +143,6 @@
                 document.getElementById("sikertelen").textContent = sikertelenCount;
                 selectedHu.button.classList.add("incorrect");
                 selectedEn.button.classList.add("incorrect");
-
-               
-                setTimeout(() => {
-                    selectedHu.button.classList.remove("incorrect");
-                    selectedHu.button.style.backgroundColor = "lightgray"; 
-                    selectedEn.button.classList.remove("incorrect");
-                    selectedEn.button.style.backgroundColor = "lightgray"; 
-                }, 1000);
             }
 
 
